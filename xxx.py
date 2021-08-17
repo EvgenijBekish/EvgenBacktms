@@ -20,7 +20,7 @@ async def application(scope, receive, send) -> None:
 
     payload = {
         "hello": "world",
-        "path": Evgenij,
+        "path": path,
     }
 
     body = json.dumps(payload).encode()
