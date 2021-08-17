@@ -1,17 +1,35 @@
-from fastapi import FastAPI
-import uvicorn
+from collections import defaultdict
+
+from fastapi import FastAPI, Request, Body, Response
+from fastapi import Query
+
+import os
 
 app = FastAPI()
 
 
-@app.get("/")
-
-async def root():
-	return {"CyberPunk 2077"}
+numbers = defaultdict(list)
+numbers["sadfaf"].append(1)
 
 
+def gen_random_name():
+	return os.urandom(16).hex()
 
-@app.get("/1/")
+def get_user(request: Request):
+	request.cookies.get("user")
 
-async def root():
-	return {"2077"}
+@app.post("/task/4")
+def handler(
+		request: Request,
+		response: Response,
+		data: str = Body( ... ),
+):
+	user = get_user(request) or gen_random_name()
+	response.set_cookie("user", user)
+	if data == "stop":
+		return sum(numbers[user])
+	else:
+		assert data.isdigit()
+		numbers[user].append(int(data))
+	return numbers[user]
+
