@@ -1,6 +1,9 @@
 import json
 import lesson
 
+
+print("Hello world")
+
 async def application(scope, receive, send) -> None:
     if scope["type"] != "http":
         return
