@@ -18,11 +18,15 @@ app = FastAPI()
 
 
 def execute_sql(sql: str) -> List[tuple]:
-    dbname = "tms"
-    host = "localhost"
-    password = "alex"
-    user = "alex"
-    dsn = f"{user=} {password=} {host=} {dbname=}"
+    # dbname = "tms"
+    # host = "localhost"
+    # password = "alex"
+    # user = "alex"
+    # dsn = f"{user=} {password=} {host=} {dbname=}"
+
+dsn = os.getenv("DATABASE_URL", "")
+if not dsn:
+        return rows
 
     rows = []
 
