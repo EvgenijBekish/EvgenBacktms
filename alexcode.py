@@ -12,23 +12,16 @@ from fastapi import Query
 from starlette.requests import Request
 from starlette.responses import Response
 
-from lessons import task_3_1
 
 app = FastAPI()
 
 
 def execute_sql(sql: str) -> List[tuple]:
-    dbname = "tms"
-    host = "localhost"
-    password = "alex"
-    user = "alex"
-    dsn = f"{user=} {password=} {host=} {dbname=}"
-
-dsn = os.getenv("DATABASE_URL", "").replace("postgressql"):
-    if not dsn:
-            return rows
-
     rows = []
+
+    dsn = os.getenv("DATABASE_URL", "").replace("postgresql", "postgres")
+    if not dsn:
+        return rows
 
     with closing(psycopg2.connect(dsn)) as connection:
         with closing(connection.cursor()) as cursor:
@@ -44,10 +37,10 @@ dsn = os.getenv("DATABASE_URL", "").replace("postgressql"):
     return rows
 
 
-@app.get("/task/3/1/")
-def handler(name: str = Query(...)):
-    result = task_3_1(name)
-    return {"result": result}
+# @app.get("/task/3/1/")
+# def handler(name: str = Query(...)):
+#     result = task_3_1(name)
+#     return {"result": result}
 
 
 numbers = defaultdict(list)
