@@ -4,13 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-uvicorn = "*"
 fastapi = "*"
+uvicorn = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
 httpx = "*"
 pytest = "*"
 pytest-asyncio = "*"
-
-[dev-packages]
 
 [requires]
 python_version = "3.9"
