@@ -1,7 +1,7 @@
 import httpx
 import pytest
 
-from asgi import app
+from alexcode import app
 
 
 @pytest.mark.asyncio
