@@ -7,9 +7,9 @@ name = "pypi"
 fastapi = "*"
 uvicorn = "*"
 psycopg2-binary = "*"
+httpx = "*"
 
 [dev-packages]
-httpx = "*"
 httpie = "*"
 pytest = "*"
 pytest-asyncio = "*"
