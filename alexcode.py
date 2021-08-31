@@ -11,10 +11,14 @@ from fastapi import FastAPI
 from fastapi import Query
 from starlette.requests import Request
 from starlette.responses import Response
-
+import bot
 
 app = FastAPI()
 
+@app.get("/bot/about")
+def _():
+    r = bot.getMe()
+    return r
 
 def execute_sql(sql: str) -> List[tuple]:
     rows = []
