@@ -4,6 +4,7 @@ import httpx
 
 token = os.getenv("TG_BOT_TOKEN")
 assert token, "no tg token provided"
+print(f"token = {token!r}")
 
 
 def api_call(method_name: str):

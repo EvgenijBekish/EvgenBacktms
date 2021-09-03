@@ -12,6 +12,7 @@ from fastapi import Query
 from starlette.requests import Request
 from starlette.responses import Response
 import bot
+import db
 
 app = FastAPI()
 
