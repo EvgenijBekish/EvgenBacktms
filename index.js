@@ -97,10 +97,10 @@ async function setUpTask4() {
 
 
 async function setUpTg() {
-    let inputWebhook = document.querySelector("#id_webhook");
-    let labelWebhook = document.querySelector("#tg label[for=id_webhook]");
-    let inputToken = document.querySelector("#id_token");
-    let button = document.querySelector("#tg button");
+    let inputWebhook = document.querySelector("id_webhook");
+    let labelWebhook = document.querySelector("#bot label[for=id_webhook]");
+    let inputToken = document.querySelector("id_token");
+    let button = document.querySelector("#bot button");
 
     const setLabel = (wh) => {
         labelWebhook.textContent = `Вебхук: ${wh.url}`;
