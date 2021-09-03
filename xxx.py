@@ -1,5 +1,5 @@
 import json
-import lesson
+import lessons
 
 
 async def application(scope, receive, send) -> None:
