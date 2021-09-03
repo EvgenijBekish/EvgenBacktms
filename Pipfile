@@ -8,6 +8,7 @@ fastapi = "*"
 uvicorn = "*"
 psycopg2-binary = "*"
 httpx = "*"
+asyncpg = "*"
 
 [dev-packages]
 httpie = "*"
