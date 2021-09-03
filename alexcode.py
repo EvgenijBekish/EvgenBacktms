@@ -1,128 +1,98 @@
-import os
 import traceback
-from collections import defaultdict
-from contextlib import closing
-from typing import List
 from typing import Optional
 
-import psycopg2
+import httpx
 from fastapi import Body
 from fastapi import FastAPI
-from fastapi import Query
-from starlette.requests import Request
-from starlette.responses import Response
-import bot
+from fastapi import Header
+from fastapi.requests import Request
+from fastapi.responses import Response
+
 import db
+import bot1
+# from lessons import task_3
+from users import gen_random_name
+from users import get_user
+from util import apply_cache_headers
+from util import authorize
+from util import static_response
 
 app = FastAPI()
 
+
 @app.get("/bot/about")
-def _():
-    r = bot.getMe()
-    return r
-
-def execute_sql(sql: str) -> List[tuple]:
-    rows = []
-
-    dsn = os.getenv("DATABASE_URL", "").replace("postgresql", "postgres")
-    if not dsn:
-        return rows
-
-    with closing(psycopg2.connect(dsn)) as connection:
-        with closing(connection.cursor()) as cursor:
-            cursor.execute(sql)
-            connection.commit()
-
-            try:
-                if cursor.rowcount:
-                    rows = cursor.fetchall()
-            except psycopg2.ProgrammingError:
-                traceback.print_exc()
-
-    return rows
+async def _(client: httpx.AsyncClient = bot1.Telegram):
+    user = await bot1.getMe(client)
+    return user
 
 
-# @app.get("/task/3/1/")
-# def handler(name: str = Query(...)):
-#     result = task_3_1(name)
-#     return {"result": result}
+@app.get("/bot/webhook")
+async def _(client: httpx.AsyncClient = bot1.Telegram):
+    whi = await bot1.getWebhookInfo(client)
+    return whi
 
 
-numbers = defaultdict(list)
+@app.post("/bot/webhook")
+async def _(
+    client: httpx.AsyncClient = bot1.Telegram,
+    whi: bot1.WebhookInfo = Body(...),
+    authorization: str = Header(""),
+):
+    authorize(authorization)
+    webhook_set = await bot1.setWebhook(client, whi)
+    whi = await bot1.getWebhookInfo(client)
+    return {
+        "ok": webhook_set,
+        "webhook": whi,
+    }
 
 
-def gen_random_name():
-    return os.urandom(16).hex()
-
-
-def get_user(request: Request):
-    return request.cookies.get("user")
-
-
-def get_number(user: str) -> Optional[int]:
-    sql = f"""
-        SELECT n FROM numbers
-        WHERE name = '{user}'
-        ;
-    """
-    r = execute_sql(sql)
+@app.post("/bot/xxxx")
+async def _(
+    client: httpx.AsyncClient = bot1.Telegram,
+    update: bot1.Update = Body(...),
+):
     try:
-        n = r[0][0]
-    except IndexError:
-        return None
-    return n
+        resp = await bot1.sendMessage(
+            client,
+            bot1.SendMessageRequest(
+                chat_id=update.message.chat.id,
+                reply_to_message_id=update.message.message_id,
+                text=update.json(),
+            ),
+        )
+
+        print(f"xxx\n\n{resp}\n\nxxx")
+    except Exception:
+        traceback.print_exc()
 
 
-def user_exists(user: str) -> bool:
-    n = get_number(user)
-    return n is not None
+@app.get("/")
+async def _(response: Response):
+    apply_cache_headers(response)
+
+    return static_response("index.html")
 
 
-def update_number(user: str, number: int) -> None:
-    n = get_number(user)
-    n += number
+@app.get("/img")
+async def _(response: Response):
+    apply_cache_headers(response)
 
-    sql = f"""
-        UPDATE numbers
-        SET
-            n = {n}
-        WHERE
-            name = '{user}'
-        ;
-    """
-    execute_sql(sql)
+    return static_response("image.jpg")
 
 
-def insert_new_user(user: str, number: int) -> None:
-    sql = f"""
-        INSERT INTO numbers(name, n)
-        VALUES ('{user}', {number})
-        ;
-    """
-    execute_sql(sql)
+@app.get("/js")
+async def _(response: Response):
+    apply_cache_headers(response)
+
+    return static_response("index.js")
 
 
-def save_number(user: str, number: int) -> None:
-    if user_exists(user):
-        update_number(user, number)
-    else:
-        insert_new_user(user, number)
+@app.post("/task/3")
+async def _(name: Optional[str] = Body(default=None)):
+    result = task_3(name)
+    return {"data": {"greeting": result}}
 
-
-# @app.post("/task/4")
-# def handler(
-#     request: Request,
-#     response: Response,
-#     data: str = Body(...),
-# ):
-#     user = get_user(request) or gen_random_name()
-#     response.set_cookie("user", user)
-#
-#     if data == "stop":
-#         return get_number(user)
-#     else:
-#         save_number(user, int(data))
-#         return data
 
 @app.post("/task/4")
 async def _(request: Request, response: Response, data: str = Body(...)):
