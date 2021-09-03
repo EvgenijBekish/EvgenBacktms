@@ -3,16 +3,16 @@ from typing import Optional
 
 import httpx
 
-from bot1.types import GetMeResponse
-from bot1.types import GetWebhookInfoResponse
-from bot1.types import Message
-from bot1.types import Response
-from bot1.types import SendMessageRequest
-from bot1.types import SendMessageResponse
-from bot1.types import SetWebhookResponse
-from bot1.types import Type
-from bot1.types import User
-from bot1.types import WebhookInfo
+from tg.types import GetMeResponse
+from tg.types import GetWebhookInfoResponse
+from tg.types import Message
+from tg.types import Response
+from tg.types import SendMessageRequest
+from tg.types import SendMessageResponse
+from tg.types import SetWebhookResponse
+from tg.types import Type
+from tg.types import User
+from tg.types import WebhookInfo
 
 token = os.getenv("TG_BOT_TOKEN")
 url = f"https://api.telegram.org/bot{token}"

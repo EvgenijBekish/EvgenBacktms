@@ -5,6 +5,8 @@ from typing import Union
 from pydantic import BaseModel
 from pydantic import Field
 
+from util import update_forward_refs
+
 
 class Type(BaseModel):
     pass
@@ -36,6 +38,7 @@ class Chat(Type):
     username: str = Field("")
 
 
+@update_forward_refs
 class Message(Type):
     chat: Chat = Field(...)
     date: int = Field(...)
@@ -49,9 +52,6 @@ class Message(Type):
         fields = {
             "from_": "from",
         }
-
-
-Message.update_forward_refs()
 
 
 class Update(Type):

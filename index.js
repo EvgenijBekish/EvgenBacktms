@@ -1,6 +1,6 @@
 const TASK_3_URL = '/task/3';
 const TASK_4_URL = '/task/4';
-const TG_WH_URL = '/bot/webhook';
+const TG_WH_URL = '/tg/webhook';
 
 
 async function api_call(url, params) {
@@ -97,10 +97,10 @@ async function setUpTask4() {
 
 
 async function setUpTg() {
-    let inputWebhook = document.querySelector("id_webhook");
-    let labelWebhook = document.querySelector("#bot label[for=id_webhook]");
-    let inputToken = document.querySelector("id_token");
-    let button = document.querySelector("#bot button");
+    let inputWebhook = document.getElementById("id_webhook");
+    let labelWebhook = document.querySelector("#tg label[for=id_webhook]");
+    let inputToken = document.getElementById("id_token");
+    let button = document.querySelector("#tg button");
 
     const setLabel = (wh) => {
         labelWebhook.textContent = `Вебхук: ${wh.url}`;

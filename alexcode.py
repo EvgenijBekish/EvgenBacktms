@@ -9,8 +9,8 @@ from fastapi.requests import Request
 from fastapi.responses import Response
 
 import db
-import bot1
-# from lessons import task_3
+import tg
+from lessons import task_3
 from users import gen_random_name
 from users import get_user
 from util import apply_cache_headers
@@ -20,49 +20,47 @@ from util import static_response
 app = FastAPI()
 
 
-@app.get("/bot/about")
-async def _(client: httpx.AsyncClient = bot1.Telegram):
-    user = await bot1.getMe(client)
+@app.get("/tg/about")
+async def _(client: httpx.AsyncClient = tg.Telegram):
+    user = await tg.getMe(client)
     return user
 
 
-@app.get("/bot/webhook")
-async def _(client: httpx.AsyncClient = bot1.Telegram):
-    whi = await bot1.getWebhookInfo(client)
+@app.get("/tg/webhook")
+async def _(client: httpx.AsyncClient = tg.Telegram):
+    whi = await tg.getWebhookInfo(client)
     return whi
 
 
-@app.post("/bot/webhook")
+@app.post("/tg/webhook")
 async def _(
-    client: httpx.AsyncClient = bot1.Telegram,
-    whi: bot1.WebhookInfo = Body(...),
+    client: httpx.AsyncClient = tg.Telegram,
+    whi: tg.WebhookInfo = Body(...),
     authorization: str = Header(""),
 ):
     authorize(authorization)
-    webhook_set = await bot1.setWebhook(client, whi)
-    whi = await bot1.getWebhookInfo(client)
+    webhook_set = await tg.setWebhook(client, whi)
+    whi = await tg.getWebhookInfo(client)
     return {
         "ok": webhook_set,
         "webhook": whi,
     }
 
 
-@app.post("/bot/xxxx")
+@app.post("/tg/xxxx")
 async def _(
-    client: httpx.AsyncClient = bot1.Telegram,
-    update: bot1.Update = Body(...),
+    client: httpx.AsyncClient = tg.Telegram,
+    update: tg.Update = Body(...),
 ):
     try:
-        resp = await bot1.sendMessage(
+        await tg.sendMessage(
             client,
-            bot1.SendMessageRequest(
+            tg.SendMessageRequest(
                 chat_id=update.message.chat.id,
                 reply_to_message_id=update.message.message_id,
-                text=update.json(),
+                text=task_3(update.message.text),
             ),
         )
-
-        print(f"xxx\n\n{resp}\n\nxxx")
     except Exception:
         traceback.print_exc()
 
