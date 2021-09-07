@@ -72,9 +72,9 @@ async def _(
         number = None
 
     if number is None:
-        message = f"непонятно: {data!r}"
+        message = f"Wrong: {data!r}"
     else:
-        message = f"твоё текущее число: {number}"
+        message = f"Your number is: {number}"
 
     await tg.sendMessage(
         client,
