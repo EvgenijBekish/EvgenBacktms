@@ -9,6 +9,7 @@ uvicorn = "*"
 psycopg2-binary = "*"
 httpx = "*"
 asyncpg = "*"
+django = "*"
 
 [dev-packages]
 httpie = "*"
