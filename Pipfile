@@ -4,15 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
-uvicorn = "*"
-psycopg2-binary = "*"
-httpx = "*"
 asyncpg = "*"
-django = "*"
+fastapi = "*"
+httpx = "*"
+uvicorn = "*"
 
 [dev-packages]
+black = "==21.7b0"
 httpie = "*"
+ipython = "*"
 pytest = "*"
 pytest-asyncio = "*"
 
