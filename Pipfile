@@ -15,6 +15,7 @@ django = "*"
 httpie = "*"
 pytest = "*"
 pytest-asyncio = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.9"
