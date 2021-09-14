@@ -4,20 +4,24 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
-uvicorn = "*"
-psycopg2-binary = "*"
-httpx = "*"
 asyncpg = "*"
-django = "*"
+delorean = "*"
 dj-database-url = "*"
+django = "*"
+django-cors-headers = "*"
+django-ipware = "*"
+fastapi = "*"
+httpx = "*"
 psycopg2 = "*"
+uvicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
+black = "==21.7b0"
 httpie = "*"
+ipython = "*"
 pytest = "*"
 pytest-asyncio = "*"
-ipython = "*"
 
 [requires]
 python_version = "3.9"
