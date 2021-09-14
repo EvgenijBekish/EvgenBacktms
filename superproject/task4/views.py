@@ -1,5 +1,5 @@
 import json
-import traceback
+
 from random import choice
 from string import ascii_lowercase
 from typing import Optional
@@ -9,13 +9,11 @@ from typing import Union
 from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render
+
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from ipware import get_client_ip
 
-from task4.models import Check
-from task4.models import CheckT
+
 from task4.models import Number
 
 
@@ -100,38 +98,3 @@ def task(request: HttpRequest) -> HttpResponse:
 
     set_user_name(response, name)
     return response
-
-
-@csrf_exempt
-def check(request: HttpRequest) -> HttpResponse:
-    resp_payload = {"ok": False}
-
-    try:
-        ip, _routable = get_client_ip(request)
-
-        obj: CheckT = CheckT.parse_raw(request.body)
-        obj.ip = ip
-
-        dbobj = Check(**obj.dict())
-        dbobj.save()
-
-        obj = CheckT.from_orm(dbobj)
-        resp_payload.update(
-            {
-                "ok": True,
-                "data": obj.dict(),
-            }
-        )
-
-    except Exception as err:
-        resp_payload["description"] = str(err)
-        resp_payload["tb"] = traceback.format_exc()
-
-    return JsonResponse(resp_payload, status=200 if resp_payload["ok"] else 500)
-
-
-@csrf_exempt
-def index(request: HttpRequest) -> HttpResponse:
-    if request.method.upper() == "GET":
-        return render(request, "task4/index.html")
-    return check(request)
