@@ -9,13 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-voud%ci5!0n8hv+9m1+q$!j9t%_1@)*&c^9q0na3zapq9qrl^v'
 
 DEBUG = True
-# DEBUG = bool(os.getenv("DEBUG"))
-
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "evgenback2app.heroku.com",
 ]
 
 INSTALLED_APPS = [

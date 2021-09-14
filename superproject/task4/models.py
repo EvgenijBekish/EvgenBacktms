@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Numbers(models.Model):
+class Number(models.Model):
     name = models.TextField(unique=True)
     n = models.BigIntegerField(default=0)
 
