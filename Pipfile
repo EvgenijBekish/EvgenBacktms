@@ -15,6 +15,7 @@ httpx = "*"
 psycopg2 = "*"
 uvicorn = "*"
 whitenoise = "*"
+task = "*"
 
 [dev-packages]
 black = "==21.7b0"
