@@ -8,6 +8,7 @@ asyncpg = "*"
 fastapi = "*"
 httpx = "*"
 uvicorn = "*"
+django = "*"
 
 [dev-packages]
 black = "==21.7b0"
